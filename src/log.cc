@@ -220,18 +220,19 @@ std::string LogFormatter::format(std::shared_ptr<Logger> logger, LogLevel::Level
 void LogFormatter::init() {
     std::vector< std::tuple<std::string, std::string, int> > vec;
     std::string nstr;
+    // 解析pattern
     for(size_t i = 0; i < m_pattern.size(); ++i) {
+        // 处理普通字符串
         if(m_pattern[i] != '%') {
             nstr.append(1, m_pattern[i]);
             continue;
         }
-
-        // %%
         if((i + 1) < m_pattern.size() && m_pattern[i+1] == '%') {
+            // %%
             nstr.append(1, '%');
             continue;
         }
-
+        // 处理匹配符 %
         size_t n = i + 1;
         int fmt_status = 0;
         size_t fmt_begin = 0;
@@ -321,7 +322,7 @@ void LogFormatter::init() {
             }
         }
 
-        std::cout << std::get<0>(i) << " - " << std::get<1>(i) << " - " << std::get<2>(i) << std::endl;
+        std::cout << "(" << std::get<0>(i) << ") - (" << std::get<1>(i) << ") - (" << std::get<2>(i) << ")" << std::endl;
     }
 }
 
