@@ -118,7 +118,7 @@ public:
     StringFormatItem(const std::string& str)
         :m_string(str) {}
     void format(std::ostream& os, Logger::ptr logger, LogLevel::Level level, LogEvent::ptr event) override {
-        os << event->getLine();
+        os << m_string;
     }
 private:
     std::string m_string;
@@ -263,13 +263,13 @@ void LogFormatter::init() {
         }
 
         if(fmt_status == 0) {
-            if(!nstr.empty()) {
+            if(!nstr.empty()) { // 把上次的普通字符串保存
                 vec.push_back(std::make_tuple(nstr, "", 0));
                 nstr.clear();
             }
             str = m_pattern.substr(i + 1, n - i - 1);
             vec.push_back(std::make_tuple(str, fmt, 1));
-            i = n;
+            i = n - 1;
         } else if (fmt_status == 1) {
             std::cout << "pattern parse error: " << m_pattern << "-" << m_pattern.substr(i) << std::endl;
             vec.push_back(std::make_tuple("<<pattern_error>>", fmt, 0));
